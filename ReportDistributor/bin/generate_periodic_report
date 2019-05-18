@@ -1,0 +1,12 @@
+#!/usr/bin/python3
+
+import time
+
+def main():
+
+    start = time.strftime( "%y%m%dT%H%M%S.000Z" )
+    print( start )
+
+
+if __name__ == "__ma=in__":
+    main()

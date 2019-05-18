@@ -1,0 +1,17 @@
+#!/usr/bin/python3
+
+from GSM import PDU
+
+def main():
+
+    pdu = PDU()
+
+    pdu.dest = '46708251358'
+    #pdu.dest = '809637207'
+    pdu.user_date = "hellohello"
+
+    print( pdu.encode() )
+
+
+if __name__ == "__main__":
+    main()
