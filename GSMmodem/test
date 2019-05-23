@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 
+from SMS import SMS
 from GSM import PDU
 
 def main():
@@ -8,9 +9,21 @@ def main():
 
     pdu.dest = '46708251358'
     #pdu.dest = '809637207'
-    pdu.user_date = "hellohello"
+    pdu.user_data = "hellohello"
 
-    print( pdu.encode() )
+    control = '0011000B916407281553F80000AA0AE8329BFD4697D9EC37'
+    derived = pdu.encode()
+
+    if derived == control:
+        print( 'SUCCESS' )
+    else:
+        print( 'FAIL' )
+        print( control )
+        print( derived )
+
+
+    sms = SMS('6024923350', "Gantry is cool")
+    sms.send()
 
 
 if __name__ == "__main__":

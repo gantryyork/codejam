@@ -1,9 +1,10 @@
 import binascii
+import Numerical
 
 class PDU():
-    csa = '00881665900005'
-    mode = 0
-    dest_type = '91'
+    csa = '881665900006' # Default to Iridium GMDSS CSA
+    mode = 0             # Default to PDU
+    dest_type = '91'     # Default to "International"
     dest = 0
     user_data = ''
     validity = ''
@@ -12,55 +13,51 @@ class PDU():
 
     def encode(self):
 
-        SMSC_info_len = '00'
-        first_octet = '11'
-        tp_msgref = '00'
-        dest_len = self.len_in_oct(self.dest)
+        SMSC_info_len = '00' # 00 = SMSC info in phone to be used
+        first_octet = '11'   #
+        tp_msgref = '00'     # Constatn, fixed
+        dest_len = self.len_in_hex(self.dest)
         dest_num = self.semi_oct_encode(self.dest)
         tp_pid = '00'
         tp_dcs = '00'  #00 7 bit, 02 8 bit
         tp_validity = 'AA'
-        tp_userdate_len = 'ww'
-        tp_userdata = self.gsm_encode( self.user_data)
+        tp_userdata =  self.gsm_encode( self.user_data).decode("utf-8").upper()
 
 
-        pdu_str = SMSC_info_len \
-            + first_octet \
-            + tp_msgref + ' '\
-            + dest_len + ' '\
-            + self.dest_type + ' '\
-            + dest_num + ' ' \
-            + tp_pid \
-            + tp_dcs \
-            + tp_validity \
-            + tp_userdate_len \
-            + tp_userdata \
+        pdu_str = '{:s}{:s}{:s}{:s}{:s}{:s}{:s}{:s}{:s}{:s}{:s}'.format(
+            SMSC_info_len,
+            first_octet,
+            tp_msgref,
+            dest_len,
+            self.dest_type,
+            dest_num,
+            tp_pid,
+            tp_dcs,
+            tp_validity,
+            '{:x}'.format( len(tp_userdata) ).upper(),
+            tp_userdata
+        )
 
         return pdu_str
 
 
-    def is_odd(self, num):
-        if num/2 == int(num/2):
-            return False
-        else:
-            return True
-
-    def len_in_oct(self, num_str):
+    def len_in_hex(self, num_str):
 
         len_str = str(hex(len(num_str)))
         len_str = len_str[2:5]
 
-        if self.is_odd( len(len_str) ):
+        if Numerical.is_odd( len(len_str) ):
             len_str = '0' + len_str.upper()
 
         return len_str
+
 
 
     def semi_oct_encode(self, num_str):
 
         enc_str = ''
 
-        if self.is_odd(len(num_str)):
+        if Numerical.is_odd(len(num_str)):
             num_str = num_str + 'F'
 
         characters = list(num_str)
@@ -74,15 +71,17 @@ class PDU():
         return enc_str
 
 
-    gsm = ("@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞ\x1bÆæßÉ !\"#¤%&'()*+,-./0123456789:;<=>?"
-           "¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ`¿abcdefghijklmnopqrstuvwxyzäöñüà")
-    ext = ("````````````````````^```````````````````{}`````\\````````````[~]`"
-           "|````````````````````````````````````€``````````````````````````")
 
     def gsm_encode(self, plaintext):
+
+        gsm = ("@£$¥èéùìòÇ\nØø\rÅåΔ_ΦΓΛΩΠΨΣΘΞ\x1bÆæßÉ !\"#¤%&'()*+,-./0123456789:;<=>?"
+               "¡ABCDEFGHIJKLMNOPQRSTUVWXYZÄÖÑÜ`¿abcdefghijklmnopqrstuvwxyzäöñüà")
+        ext = ("````````````````````^```````````````````{}`````\\````````````[~]`"
+               "|````````````````````````````````````€``````````````````````````")
+
         res = bytearray()
         for c in plaintext:
-            idx = gsm.find(c);
+            idx= gsm.find(c);
             if idx != -1:
                 res.append(idx)
                 continue
@@ -90,5 +89,5 @@ class PDU():
             if idx != -1:
                 res.append(27)
                 res.append(idx)
-        print( res )
+
         return binascii.hexlify(res)
