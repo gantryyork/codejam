@@ -1,0 +1,72 @@
+#!/usr/bin/python3
+
+from testexecconfig import TestExecConfig
+import pprint
+
+pp = pprint.PrettyPrinter(indent=4)
+
+def main():
+
+    cfg_file = './config.json'
+    cfg = TestExecConfig( cfg_file )
+    #log = TestExecLogger( cfg.elasticsearch )
+
+    test_counts = []
+    test_count = 0
+    print( 'config file: ', cfg.cfg_file )
+    print( 'reset cycle: ', cfg.cycle )
+
+    while True:
+        cfg.read()
+        tests = get_all_tests( cfg )
+        exit()
+
+        if test_count > cfg.cycle:
+            test_counts = []
+            test_count = 0
+
+        i = randint( len(tests) )
+
+        if not is_eligible( tests[i] ):
+            continue
+
+        if tests[i].testtype == 'testsimulation':
+            print( 'Executing test type testsimulation' )
+            exec_testsimulation( test[i] )
+
+        elif tests[i].testtype == 'autodialer':
+            print( 'Executing test type autodialer' )
+            exec_autodialer( test[i] )
+
+        elif tests[i].testtype == 'sqm':
+            print( 'Executing test type sqm')
+            exec_sqm( )
+
+        else:
+            print( 'Error: unknown test type' )
+
+def get_all_tests( cfg ):
+
+    tests = []
+    for cfg_test in cfg.tests:
+        pp.pprint( cfg_test )
+        #test = TestExecTest( cfg_test )
+        #tests.append( test )
+
+    return
+
+def is_eligible( test ):
+    return True
+
+def exec_testsimulation():
+    return True
+
+def exec_autodialer():
+    return True
+
+def exec_sqm():
+    return True
+
+
+if __name__ == "__main__":
+    main()

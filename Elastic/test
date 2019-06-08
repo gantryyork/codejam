@@ -1,0 +1,76 @@
+#!/usr/bin/python3
+
+from datetime import datetime
+from elasticsearch import Elasticsearch
+import pprint
+
+def main():
+
+    pp = pprint.PrettyPrinter(indent=4)
+    es = Elasticsearch()
+
+    #runlog
+    doc1 = {
+        'run_id': 'bdu3--scs--iwcs--net_20190327-162358_30229_1166',
+        'input_type': 'log',
+        'bcxid': '300008060007060',
+        'beat': {'hostname':'bdu3.scs.iwcs.net','version':'5.1.1','name':'bdu3.scs.iwcs.net'},
+        'timestamp': datetime.now()
+    }
+
+    #calllog
+    doc2 = {
+        'run_id': 'bdu3--scs--iwcs--net_20190327-162358_30229_1166',
+        'call_id': 'bdu3--scs--iwcs--net_20190327-162358_30229_1166_1',
+        'input_type': 'log',
+        'bcxid': '300008060007060',
+        'beat': {'hostname':'bdu3.scs.iwcs.net','version':'5.1.1','name':'bdu3.scs.iwcs.net'},
+        'timestamp': datetime.now()
+    }
+
+    #endpointprocessstate
+    doc3 = {
+        'run_id': 'bdu3--scs--iwcs--net_20190327-162358_30229_1166',
+        'input_type': 'log',
+        'bcxid': '300008060007060',
+        'state': 'SUCCESSFUL'
+        'beat': {'hostname':'bdu3.scs.iwcs.net','version':'5.1.1','name':'bdu3.scs.iwcs.net'},
+        'timestamp': datetime.now()
+    }
+
+
+    res = es.index(
+         index = "logstash",
+         doc_type = "runlog",
+         body = doc
+    )
+
+    print( res['result'] )
+
+    res = es.get(
+        index = "logstash",
+        doc_type = "runlog",
+        id = 1
+    )
+
+    print( res['_source'] )
+
+    es.indices.refresh( index = "logstash" )
+
+    res = es.search(
+        index = "logstash",
+        body = {
+            "query": {
+                "match_all": {}
+            }
+        }
+    )
+
+    pp.pprint(res)
+
+    # print( "Got %d Hits:" % res['hits']['total']['value'])
+    # for hit in res['hits']['hits']:
+    #     print( "%(timestamp)s %(author)s: %(text)s" % hit["_source"])
+    #
+if __name__ == "__main__":
+    main()

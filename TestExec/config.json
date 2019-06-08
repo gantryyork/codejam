@@ -1,0 +1,24 @@
+{
+    "elasticsearch": "http://10.10.10.10:5601",
+    "cycle": 100,
+    "tests": [
+        {
+            "test_id": "1",
+            "test_name": "Example Test 1",
+            "test_type": "testsimulation",
+            "test_weight": 40
+        },
+        {
+            "test_id": "P32",
+            "test_name": "Example Test 2",
+            "test_type": "testsimulation",
+            "test_weight": 30
+        },
+        {
+            "test_id": "X32-A",
+            "test_name": "Example Test 3",
+            "test_type": "testsimulation",
+            "test_weight": 30
+        }
+    ]
+}
