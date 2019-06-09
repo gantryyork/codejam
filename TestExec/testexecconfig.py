@@ -1,7 +1,7 @@
 import json
 import pprint
 
-class TestExecConfig:
+class TestExecConfig(object):
 
 
     def __init__(self, cfg_file):

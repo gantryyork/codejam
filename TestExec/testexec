@@ -1,6 +1,10 @@
 #!/usr/bin/python3
 
+import json
+import random
+
 from testexecconfig import TestExecConfig
+from testexectest import TestExecTest
 import pprint
 
 pp = pprint.PrettyPrinter(indent=4)
@@ -11,7 +15,7 @@ def main():
     cfg = TestExecConfig( cfg_file )
     #log = TestExecLogger( cfg.elasticsearch )
 
-    test_counts = []
+    test_counts = {}
     test_count = 0
     print( 'config file: ', cfg.cfg_file )
     print( 'reset cycle: ', cfg.cycle )
@@ -19,26 +23,42 @@ def main():
     while True:
         cfg.read()
         tests = get_all_tests( cfg )
-        exit()
 
+        # resetting test counts
         if test_count > cfg.cycle:
-            test_counts = []
             test_count = 0
+            test_counts = {}
 
-        i = randint( len(tests) )
+        # choosing a test randomly
+        i = random.randint( 0, len(tests)-1 )
+        print( 'LOG: chosing index={0} testid testid={1}'.format(i, tests[i].test_id)  )
 
-        if not is_eligible( tests[i] ):
+        # Check to see if we are tracking the test counts for this test id
+        if tests[i].test_id in test_counts:
+            print( 'adding key to counts')
+            test_counts.update( {tests[i].test_id : 0} )
+
+        pp.pprint( test_counts )
+
+        if not check_weighting( tests[i], test_count, test_counts ):
             continue
 
-        if tests[i].testtype == 'testsimulation':
-            print( 'Executing test type testsimulation' )
-            exec_testsimulation( test[i] )
+        if tests[i].test_type == 'testsimulation':
+            print( 'Executing test id:{0} testtype:{1} testname:{2}'.format(
+                    test.test_id,
+                    test.test_type,
+                    test.test_name
+                )
+            )
+            test_count += 1
+            test_counts[test.test_id] += 1
+            exec_testsimulation( tests[i] )
 
-        elif tests[i].testtype == 'autodialer':
+        elif tests[i].test_type == 'autodialer':
             print( 'Executing test type autodialer' )
-            exec_autodialer( test[i] )
+            exec_autodialer( tests[i] )
 
-        elif tests[i].testtype == 'sqm':
+        elif tests[i].test_type == 'sqm':
             print( 'Executing test type sqm')
             exec_sqm( )
 
@@ -49,22 +69,31 @@ def get_all_tests( cfg ):
 
     tests = []
     for cfg_test in cfg.tests:
-        pp.pprint( cfg_test )
-        #test = TestExecTest( cfg_test )
-        #tests.append( test )
+        test = TestExecTest( cfg_test )
+        tests.append( test )
 
-    return
+    return tests
 
-def is_eligible( test ):
+def check_weighting( test, test_count, test_counts ):
+
+    if test.test_id in test_counts:
+        if test.test_weight >= int(test_count[test.test_id]/test_counts):
+            print( 'Weighting PASS')
+            return True
+        else:
+            print( 'Weighting FAIL')
+            return False
+    else:
+        print( test.test_id, ' not being counted')
+        return False
+
+def exec_testsimulation( test ):
     return True
 
-def exec_testsimulation():
+def exec_autodialer( test ):
     return True
 
-def exec_autodialer():
-    return True
-
-def exec_sqm():
+def exec_sqm( test ):
     return True
 
 
