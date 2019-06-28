@@ -2,6 +2,7 @@
 
 import json
 import random
+import argparse
 
 from testexecconfig import TestExecConfig
 from testexectest import TestExecTest
@@ -9,83 +10,51 @@ import pprint
 
 pp = pprint.PrettyPrinter(indent=4)
 
-def main():
+default_cfg_file = './config.json'
 
-    cfg_file = './config.json'
+def main( args ):
+
+    cfg_file = default_cfg_file
+    if args.cfg:
+        cfg_file = args.cfg
+
+    print( cfg_file )
     cfg = TestExecConfig( cfg_file )
     #log = TestExecLogger( cfg.elasticsearch )
 
-    test_counts = {}
-    test_count = 0
     print( 'config file: ', cfg.cfg_file )
-    print( 'reset cycle: ', cfg.cycle )
 
     while True:
+        # read the config file, it could have changed
         cfg.read()
-        tests = get_all_tests( cfg )
 
-        # resetting test counts
-        if test_count > cfg.cycle:
-            test_count = 0
-            test_counts = {}
+        # Get a test to run
+        test = cfg.get_next_test()
 
-        # choosing a test randomly
-        i = random.randint( 0, len(tests)-1 )
-        print( 'LOG: chosing index={0} testid testid={1}'.format(i, tests[i].test_id)  )
 
-        # Check to see if we are tracking the test counts for this test id
-        if tests[i].test_id in test_counts:
-            print( 'adding key to counts')
-            test_counts.update( {tests[i].test_id : 0} )
-
-        pp.pprint( test_counts )
-
-        if not check_weighting( tests[i], test_count, test_counts ):
-            continue
-
-        if tests[i].test_type == 'testsimulation':
+        if test.test_type == 'MTTest':
             print( 'Executing test id:{0} testtype:{1} testname:{2}'.format(
                     test.test_id,
                     test.test_type,
                     test.test_name
                 )
             )
-            test_count += 1
-            test_counts[test.test_id] += 1
-            exec_testsimulation( tests[i] )
+            exec_testsimulation( test )
 
-        elif tests[i].test_type == 'autodialer':
-            print( 'Executing test type autodialer' )
+        elif tests.test_type == 'Autodialer':
+            print( 'Executing test type Autodialer' )
             exec_autodialer( tests[i] )
 
-        elif tests[i].test_type == 'sqm':
-            print( 'Executing test type sqm')
+        elif tests.test_type == 'LoadTest':
+            print( 'Executing test type LoadTest')
             exec_sqm( )
 
         else:
             print( 'Error: unknown test type' )
 
-def get_all_tests( cfg ):
 
-    tests = []
-    for cfg_test in cfg.tests:
-        test = TestExecTest( cfg_test )
-        tests.append( test )
 
-    return tests
 
-def check_weighting( test, test_count, test_counts ):
-
-    if test.test_id in test_counts:
-        if test.test_weight >= int(test_count[test.test_id]/test_counts):
-            print( 'Weighting PASS')
-            return True
-        else:
-            print( 'Weighting FAIL')
-            return False
-    else:
-        print( test.test_id, ' not being counted')
-        return False
 
 def exec_testsimulation( test ):
     return True
@@ -98,4 +67,7 @@ def exec_sqm( test ):
 
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument( '-c', '--cfg', help='Config file, json format' )
+    args = parser.parse_args()
+    main( args )

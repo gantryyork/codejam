@@ -6,6 +6,12 @@ class TestExecTest(object):
 
     def __init__( self, data ):
 
+        if data['active']:
+            self.active = data['active']
+
+        if data['immediate']:
+            self.immediate = data['immediate']
+
         if data['test_id']:
             self.test_id = data['test_id']
 
