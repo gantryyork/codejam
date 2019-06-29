@@ -1,42 +1,41 @@
 {
     "elasticsearch": "http://10.10.10.10:5601",
-    "cycle": 100,
     "tests": [
         {
-            "active": 1,
-            "immediate": 0,
-            "test_id": "1",
+            "active": true,
+            "immediate": false,
+            "test_id": "P31",
             "test_name": "Example Test 1",
             "test_type": "Autodialer",
             "test_weight": 40
         },
         {
-            "active": 1,
-            "immediate": 0,
+            "active": true,
+            "immediate": false,
             "test_id": "P32",
             "test_name": "Example Test 2",
             "test_type": "MTTest",
             "test_weight": 30
         },
         {
-            "active": 1,
-            "immediate": 0,
+            "active": true,
+            "immediate": false,
             "test_id": "X32-A",
             "test_name": "Example Test 3",
             "test_type": "LoadTest",
             "test_weight": 30
         },
         {
-            "active": 1,
-            "immediate": 0,
+            "active": true,
+            "immediate": false,
             "test_id": "333444",
             "test_name": "Example Test 4",
             "test_type": "BogusType",
             "test_weight": 30
         },
         {
-            "active": 0,
-            "immediate": 0,
+            "active": false,
+            "immediate": false,
             "test_id": "TSCGWIT-317",
             "test_name": "Example Test 5",
             "test_type": "MTTest",

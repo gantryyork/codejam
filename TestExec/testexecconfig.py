@@ -25,7 +25,6 @@ class TestExecConfig(object):
             data = json.load( json_file )
 
         self.elasticsearch = data['elasticsearch']
-        self.cycle = data['cycle']
         self.tests = data['tests']
         self.active_tests = list()  # List of TestExecTest
         self.total_weight = 0
@@ -38,13 +37,37 @@ class TestExecConfig(object):
         valid_tests = list()
         for test in self.tests:
             if test['test_type'] in valid_test_types:
-                if test['active'] == 1:
+                if test['active']:
                     valid_test = TestExecTest( test )
                     valid_tests.append( valid_test )
 
         self.active_tests = valid_tests
 
-        return valid_tests
+        return valid_test
+
+    def get_immediate_tests( self ):
+
+        immediate_tests = list()
+        for active_test in self.active_tests:
+            if active_test.immediate:
+                immediate_tests.append( active_test )
+
+        return immediate_tests
+
+    def edit_cfg_file( self, test_id, attribute, value ):
+
+        with open( self.cfg_file ) as infile:
+            data = json.load( infile )
+
+        for i in range( 0, len(data['tests']) ):
+            if data['tests'][i]['test_id'] == test_id:
+                data['tests'][i][attribute] = value
+            i += 1
+
+        with open( self.cfg_file, 'w' ) as outfile:
+            json.dump(data, outfile, sort_keys=True, indent=4)
+
+        return
 
     def calc_total_weight( self ):
 

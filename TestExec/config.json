@@ -1,30 +1,29 @@
 {
     "elasticsearch": "http://10.10.10.10:5601",
-    "cycle": 100,
     "tests": [
         {
-            "active": 1,
-            "immediate": 0,
-            "test_id": "1",
+            "active": true,
+            "immediate": false,
+            "test_id": "GW-A001",
             "test_name": "Example Test 1",
             "test_type": "MTTest",
             "test_weight": 20
         },
         {
-            "active": 1,
-            "immediate": 0,
-            "test_id": "P32",
+            "active": true,
+            "immediate": false,
+            "test_id": "GW-A002",
             "test_name": "Example Test 2",
-            "test_type": "MTTest",
+            "test_type": "Autodialer",
             "test_weight": 60
         },
         {
-            "active": 1,
-            "immediate": 0,
-            "test_id": "X32-A",
+            "active": true,
+            "immediate": false,
+            "test_id": "GW-A003",
             "test_name": "Example Test 3",
             "test_type": "MTTest",
-            "test_weight": 20 
+            "test_weight": 20
         }
     ]
 }

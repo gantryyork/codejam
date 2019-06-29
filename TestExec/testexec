@@ -31,27 +31,7 @@ def main( args ):
         # Get a test to run
         test = cfg.get_next_test()
 
-
-        if test.test_type == 'MTTest':
-            print( 'Executing test id:{0} testtype:{1} testname:{2}'.format(
-                    test.test_id,
-                    test.test_type,
-                    test.test_name
-                )
-            )
-            exec_testsimulation( test )
-
-        elif tests.test_type == 'Autodialer':
-            print( 'Executing test type Autodialer' )
-            exec_autodialer( tests[i] )
-
-        elif tests.test_type == 'LoadTest':
-            print( 'Executing test type LoadTest')
-            exec_sqm( )
-
-        else:
-            print( 'Error: unknown test type' )
-
+        test.execute()
 
 
 

@@ -6,10 +6,10 @@ class TestExecTest(object):
 
     def __init__( self, data ):
 
-        if data['active']:
+        if data['active'] is not None:
             self.active = data['active']
 
-        if data['immediate']:
+        if data['immediate'] is not None:
             self.immediate = data['immediate']
 
         if data['test_id']:
@@ -23,3 +23,8 @@ class TestExecTest(object):
 
         if data['test_weight']:
             self.test_weight = data['test_weight']
+
+    def execute( self ):
+        testid = self.test_id
+        name = self.test_name
+        print( f'Executing {testid}, name: {name}')
