@@ -4,8 +4,8 @@ import json
 import random
 import argparse
 
-from testexecconfig import TestExecConfig
-from testexectest import TestExecTest
+from testexec.config import TestExecConfig
+from testexec.test import TestExecTest
 import pprint
 
 pp = pprint.PrettyPrinter(indent=4)

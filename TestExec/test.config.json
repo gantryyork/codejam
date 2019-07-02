@@ -15,7 +15,8 @@
             "test_id": "P32",
             "test_name": "Example Test 2",
             "test_type": "MTTest",
-            "test_weight": 30
+            "test_weight": 30,
+            "mt_test_file": "/GWIT/certus/test-P32.sh"
         },
         {
             "active": true,
@@ -39,7 +40,8 @@
             "test_id": "TSCGWIT-317",
             "test_name": "Example Test 5",
             "test_type": "MTTest",
-            "test_weight": 30
+            "test_weight": 30,
+            "mt_test_file": "/GWIT/certus/test-TSCGWIT-317"
         }
     ]
 }

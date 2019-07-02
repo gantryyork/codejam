@@ -7,7 +7,8 @@
             "test_id": "GW-A001",
             "test_name": "Example Test 1",
             "test_type": "MTTest",
-            "test_weight": 20
+            "test_weight": 20,
+            "mt_test_file": "/GWIT/tests/test-GW-A001.sh"
         },
         {
             "active": true,
@@ -15,7 +16,8 @@
             "test_id": "GW-A002",
             "test_name": "Example Test 2",
             "test_type": "Autodialer",
-            "test_weight": 60
+            "test_weight": 60,
+            "autodialer_url": "myhost.iwcs.scw.net:9999"
         },
         {
             "active": true,
@@ -23,7 +25,8 @@
             "test_id": "GW-A003",
             "test_name": "Example Test 3",
             "test_type": "MTTest",
-            "test_weight": 20
+            "test_weight": 20,
+            "mt_test_file": "/GWIT/tests/test-GW-A003.sh"
         }
     ]
 }
