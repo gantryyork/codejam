@@ -1,2 +1,2 @@
 # codejam
-A sandbox for code that I write.  Not all of this code will actually execute.
+This is a sandbox for code that I write.  Not all of this code will actually execute.
