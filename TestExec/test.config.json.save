@@ -1,54 +1,46 @@
 {
-    "execmode": "MonteCarlo",
-    "runlabel": "*",
     "elasticsearch": "http://10.10.10.10:5601",
-    "elasticsearch_port": "5601",
-    "elasticsearch_index": "gwit",
+    "cycle": 100,
     "tests": [
         {
-            "active": true,
-            "immediate": false,
-            "test_id": "P31",
+            "active": 1,
+            "immediate": 0,
+            "test_id": "1",
             "test_name": "Example Test 1",
             "test_type": "Autodialer",
-	    "setlabels" : ["smoke","acceptance"],
-	    "sequence_num": 1,
             "test_weight": 40
         },
         {
-            "active": true,
-            "immediate": false,
+            "active": 1,
+            "immediate": 0,
             "test_id": "P32",
             "test_name": "Example Test 2",
             "test_type": "MTTest",
-            "test_weight": 30,
-            "mt_test_file": "/GWIT/certus/test-P32.sh"
+            "test_weight": 30
         },
         {
-            "active": true,
-            "immediate": false,
+            "active": 1,
+            "immediate": 0,
             "test_id": "X32-A",
             "test_name": "Example Test 3",
             "test_type": "LoadTest",
             "test_weight": 30
         },
         {
-            "active": true,
-            "immediate": false,
+            "active": 1,
+            "immediate": 0,
             "test_id": "333444",
             "test_name": "Example Test 4",
             "test_type": "BogusType",
             "test_weight": 30
         },
         {
-            "active": false,
-            "immediate": false,
+            "active": 0,
+            "immediate": 0,
             "test_id": "TSCGWIT-317",
             "test_name": "Example Test 5",
             "test_type": "MTTest",
-            "test_weight": 30,
-            "mt_test_file": "/GWIT/certus/test-TSCGWIT-317"
+            "test_weight": 30
         }
     ]
 }
-
