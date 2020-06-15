@@ -38,7 +38,7 @@ class Student:
 
 
     def __str__(self):
-        return f'{self.__fname} {self.__lname}'
+        return f'{self.fname} {self.lname}'
 
 
 #TODO: GradStudent class
@@ -63,9 +63,7 @@ class GradStudent(Student):
 
 
     def __str__(self):
-        # GANTRY HELP!!! Ok so im trying to print 'THESIS <blahblahblah>' as shown in the getter "@property" and setter
-        # "thesis.setter" but its only printing what is passed in by the user.
-        return f'{super().__str__()}\n\t{property(self.__thesis)}'
+        return f'{super().__str__()}\n\t{self.thesis}'
 
 
 
@@ -92,7 +90,7 @@ class PhdStudent(Student):
 
 
     def __str__(self):
-        return f'{super().__str__()}\n\t{self.__dissertation}'
+        return f'{super().__str__()}\n\t{self.dissertation}'
 
 
 def add_student(studentType):
@@ -148,11 +146,7 @@ def main():
 
     # GATNRY I have to get this below to work
     for student in students:
-        print('{0} {1}'.format(student.fname, student.lname))
-        if isinstance(student, GradStudent):
-            print('    THESIS: {0}'.format(student.thesis))
-        if isinstance(student, PhdStudent):
-            print('    DISSERTATION: {0}'.format(student.dissertation))
+        print(student)
 
 if __name__ == "__main__":
     # call and execute the main function
