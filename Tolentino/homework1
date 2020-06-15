@@ -1,0 +1,160 @@
+#!/usr/bin/python3
+
+
+class Student:
+
+    def __init__(self, fname=''):
+        '''Initializer that accepts only first name'''
+        self.__fname = fname
+        self.__lname = ''
+
+
+    @property
+    def fname(self):
+        '''Returns uppercase fname'''
+        return self.__fname.upper()
+
+
+    @property
+    def lname(self):
+        '''Checks to see if alphabetical input'''
+        return self.__lname.upper()
+
+
+    @fname.setter
+    def fname(self, fname):
+        if fname.isalpha():
+            self.__fname = fname
+        else:
+            self.__fname = 'Unknown'
+
+
+    @lname.setter
+    def lname(self, lname):
+        if lname.isalpha():
+            self.__lname = lname
+        else:
+            self.__lname = 'Unknown'
+
+
+    def __str__(self):
+        return f'{self.__fname} {self.__lname}'
+
+
+#TODO: GradStudent class
+
+class GradStudent(Student):
+
+    def __init__(self, thesis, fname = ''):
+        super().__init__(fname)
+        self.__thesis = thesis
+
+
+    @property
+    def thesis(self):
+        '''Checks to see if alphabetical input'''
+        return self.__thesis.upper()
+
+
+    @thesis.setter
+    def thesis(self, thesis):
+        '''Adds Thesis: '''
+        self.__thesis = f'Thesis: {thesis}'
+
+
+    def __str__(self):
+        # GANTRY HELP!!! Ok so im trying to print 'THESIS <blahblahblah>' as shown in the getter "@property" and setter
+        # "thesis.setter" but its only printing what is passed in by the user.
+        return f'{super().__str__()}\n\t{property(self.__thesis)}'
+
+
+
+
+#TODO: PhDStudent class
+
+class PhdStudent(Student):
+
+    def __init__(self, dissertation, fname =''):
+        super().__init__(fname)
+        self.__dissertation = dissertation
+
+
+    @property
+    def dissertation(self):
+        '''Checks to see if alphabetical input'''
+        return self.__dissertation.upper()
+
+
+    @dissertation.setter
+    def dissertation(self, disseration):
+        '''Adds Dissertation: '''
+        self.__dissertations = f'Disseration: {disseration}'
+
+
+    def __str__(self):
+        return f'{super().__str__()}\n\t{self.__dissertation}'
+
+
+def add_student(studentType):
+    """Get student data and create an object to be returned"""
+    student = None
+    # Get first and last name here because all students need this data
+    first = input('Enter first name: ')
+    last = input('Enter last name: ')
+
+    #TODO: Determine student type and construct an object and save in student
+
+    if studentType == 'G':
+        thesis = input('Enter thesis title: ')
+        student = GradStudent(thesis, fname=first)
+    elif studentType == 'P':
+        dissertation = input('Enter dissertation tite: ')
+        student = PhdStudent(dissertation, fname=first)
+    else:
+        student = Student(first)
+
+    #TODO: Assign last_name using our object's property then return student
+
+    student.lname = last
+
+    return student
+
+# Main Function
+def main():
+    """Main program logic"""
+    students = []
+    entry = ''
+    print("{:^50}".format('Student Management System'))
+
+    # GANTRY!! This commented out code is what I have to run
+    while entry != 'X':
+        studentTypes = ['S', 'G', 'P']
+        # Get user entry and capitalize the entry
+        entry = input(
+            '\nEnter (S)tudent, (G)radStudent, (P)hDStudent or (X)exit: ')
+        entry = entry.upper()
+
+    #    #TODO: Is user entry one of studentTypes. Yes - add_student to list
+        if entry in studentTypes:
+            students.append(add_student(entry))
+#
+    #TODO: print students and dissertation if the student is a PhD type
+    print("\nThe following students were added...")
+
+    # GANTRY This is me using test data but i have to get the for loop commented out below to work
+    #temp_student = GradStudent('thesis', 'fname')
+    #temp_student.lname = 'lname'
+    #print(temp_student)
+
+    # GATNRY I have to get this below to work
+    for student in students:
+        print('{0} {1}'.format(student.fname, student.lname))
+        if isinstance(student, GradStudent):
+            print('    THESIS: {0}'.format(student.thesis))
+        if isinstance(student, PhdStudent):
+            print('    DISSERTATION: {0}'.format(student.dissertation))
+
+if __name__ == "__main__":
+    # call and execute the main function
+    main()
+
