@@ -12,7 +12,7 @@ STREAM_ID = 0
 STREAM_ID_TIME = datetime.datetime.utcnow()
 print(STREAM_ID_TIME)
 
-MAX_STREAMS = 10
+MAX_STREAMS = 4
 MAX_STREAM_LENGTH = 10
 DATA_EXPIRE = 0.5
 DATASTREAMS = list()
@@ -41,14 +41,16 @@ class MyReader(object):
         self.message = list()
 
     def read_stream(self):
+        global STREAMS
 
         message_received = False
         while not message_received:
             time.sleep(0.1)
             check_stream_id()
-            print(f"my stream_id {self.stream_id} and {STREAM_ID}")
+            #print(f"my stream_id {self.stream_id} and {get_stream_id()}")
             if self.stream_id == get_stream_id():
                 data = get_stream_data()
+                pp.pprint(get_datastreams())
                 if data == 999:
                     message_received = True
                 else:
@@ -71,34 +73,35 @@ def check_stream_id():
 
 
 def get_stream_id():
-    global STEAM_ID
+    global STREAM_ID
     return STREAM_ID
+
+
+def get_datastreams():
+    global DATASTREAMS
+    return DATASTREAMS
 
 
 def get_next_datastream_id():
 
     global MAX_STREAMS
     global DATASTREAMS
+    global STREAM_ID
 
     success = False
     next_datastream_id = None
     while not success:
         next_datastream_id = random.randint(0, MAX_STREAMS - 1)
-        print(f"next_datastream_id {next_datastream_id}")
-        print(len(DATASTREAMS[next_datastream_id]))
-
         if len(DATASTREAMS[next_datastream_id]) > 0:
             success = True
 
-    global STEAM_ID
-    print(f"next_datastream_id {next_datastream_id} and STREAM_ID {STREAM_ID}")
     STREAM_ID = next_datastream_id
 
 
 def get_stream_data():
     global DATASTREAMS
+
     data = DATASTREAMS[STREAM_ID].pop()
-    print(f"stream data {data}")
     return data
 
 
