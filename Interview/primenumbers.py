@@ -12,6 +12,8 @@ def main():
 
 def is_prime( n ):
 
+    #comment
+    #comment
     #print( 'checking {0}'.format(n) )
 
     if n == 4:

@@ -4,21 +4,31 @@ import os
 import re
 import json
 import subprocess
-
+from bottle import route, run
 import pprint
+
 pp = pprint.PrettyPrinter(indent=4)
 
-from bottle import route, run
+
+VERSION = '1.0.0'
 
 
-@route('/hello')
-def hello():
-    return "hello world"
+@route('/version')
+def version():
+
+    return VERSION
+
 
 @route('/filesystems')
-def ps():
+def filesystems():
+    fss = fs()
+    return fss
+
+
+def fs():
     result = subprocess.run(['df', '-h'], stdout=subprocess.PIPE)
     lines = result.stdout.decode('utf-8').splitlines()
+    print(lines)
 
     fss = list()
 
@@ -29,18 +39,15 @@ def ps():
             continue
         name, size, used, avail, pct, mount = line.split()
         fs = {
-            'name':name,
-            'size':size,
-            'used':used,
-            'avail':avail,
-            'pct':pct,
-            'mount':mount
+            'name': name,
+            'size': size,
+            'used': used,
+            'avail': avail,
+            'pct': pct,
+            'mount': mount
         }
-        fss.append(fs)
 
-    response = {'filesystems':fss}
+    return response
 
-
-    return json.dumps(response)
 
 run(host='localhost', port=8080, debug=True)
